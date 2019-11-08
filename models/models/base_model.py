@@ -24,5 +24,5 @@ class BaseModel():
         dictionary = self.__dict__
         dictionary['__class__'] = self.__class__.__name__
         dictionary['update_at'] = str(datetime.isoformat(self.update_at))
-        dictionary['created_at'] = str(self.created_at)
+        dictionary['created_at'] = str(datetime.isoformat(self.created_at))
         return dictionary
