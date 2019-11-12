@@ -2,7 +2,7 @@
 """ storage model """
 from json import dump, load
 from datetime import datetime
-
+from os import path
 
 class FileStorage():
     """FileStorage class"""
@@ -13,29 +13,29 @@ class FileStorage():
 
     def all(self):
         """ """
-        return FileStorage.__objects
+        return self.__objects
 
     def new(self, obj):
-        """"""
+        """ set the dictionary """
         nameClass = obj.__class__.__name__
         idClass = obj.id
         key = nameClass+'.'+idClass
-        dataDict = obj.__dict__.copy()
-        created_date = dataDict['created_at']
-        update_date = dataDict['update_at']
-        dataDict['created_at'] = str(datetime.isoformat(created_date))
-        dataDict['update_at'] = str(datetime.isoformat(update_date))
-        FileStorage.__objects.update({key: dataDict})
-        print("\n\ndata {}\n\n".format(dataDict))
+        self.__objects.update({key: obj.to_dict()})
+        #self.__objects[key] = obj.__dict__
 
-       
     def save(self):
         """ serialize the object to a JSON file"""
-        with open(FileStorage.__file_path, 'a', encoding='utf-8') as file:
-            dataJson = FileStorage.__objects
-            dump(dataJson, file)
+        data = {}
+
+        data = self.__objects
+        """for key, value in data.items():
+            value['created_at'] = str(value['created_at'])
+            value['update_at'] = str(value['update_at'])"""
+
+        with open(self.__file_path, 'w', encoding='utf-8') as file:
+            dump(data, file)
 
     def reload(self):
-        """ """
-        """with open(FileStorage.__file_path, 'r', encoding='utf-8')as file:
-            load(file)"""
+        if path.exists(self.__file_path):
+            with open(self.__file_path, 'r', encoding='utf-8')as file:
+                self.__objects = load(file)
