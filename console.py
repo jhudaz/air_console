@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 import cmd
+from models.base_model import BaseModel
+base = BaseModel()
 
 
 class HBNBCommand(cmd.Cmd):
@@ -24,6 +26,29 @@ class HBNBCommand(cmd.Cmd):
     def help_quit(self):
         print('Quit command to exit the program\n')
 
+    def do_create(self, line):
+        if line is "":
+            print('** class name missing **')
+        elif line != 'BaseModel':
+            print('** class doesn\'t exist **')
+        else:
+            self.line = base
+            print(base.id)
+
+    def do_show(self, line):
+        linea = line.split(' ')
+        if len(linea) < 1:
+            print('** instance id missing **')
+        if linea[0] is "":
+            print('** class name missing **')
+        if linea[0] != 'BaseModel':
+            print('** class doesn\'t exist **')
+        if len(linea) < 1:
+            print('** instance id missing **')
+        if len(linea) < 2:
+            print('** no instance found **')
+        else:
+            print(base)
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-
