@@ -4,6 +4,7 @@ from json import dump, load
 from datetime import datetime
 from os import path
 
+
 class FileStorage():
     """FileStorage class"""
 
@@ -21,21 +22,15 @@ class FileStorage():
         idClass = obj.id
         key = nameClass+'.'+idClass
         self.__objects.update({key: obj.to_dict()})
-        #self.__objects[key] = obj.__dict__
 
     def save(self):
         """ serialize the object to a JSON file"""
-        data = {}
-
         data = self.__objects
-        """for key, value in data.items():
-            value['created_at'] = str(value['created_at'])
-            value['update_at'] = str(value['update_at'])"""
-
         with open(self.__file_path, 'w', encoding='utf-8') as file:
             dump(data, file)
 
     def reload(self):
+        """ deserialize the JSON file into a python object"""
         if path.exists(self.__file_path):
             with open(self.__file_path, 'r', encoding='utf-8')as file:
                 self.__objects = load(file)
