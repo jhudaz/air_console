@@ -10,7 +10,7 @@ class BaseModel():
 
     def __init__(self, *args, **kwargs):
         """ constructor """
-        
+
         if len(kwargs) > 0:
             """ dictionary representation """
             for key, value in kwargs.items():
@@ -41,15 +41,11 @@ class BaseModel():
         self.update_at = datetime.now()
         self.update_at = self.update_at.isoformat()
         storage.save()
-        
 
     def to_dict(self):
         """ return a dictionary """
         dictionary = self.__dict__
         dictionary.update({'__class__': self.__class__.__name__})
-        dictionary.update({'created_at': str(datetime.isoformat(self.created_at))})
-        dictionary.update({'update_at': str(datetime.isoformat(self.update_at))})
-        #dictionary['__class__'] = self.__class__.__name__
-        #dictionary['created_at'] = str(datetime.isoformat(self.created_at))
-        #dictionary['update_at'] = str(datetime.isoformat(self.update_at))
+        dictionary.update({'created_at': self.created_at.isoformat()})
+        dictionary.update({'update_at': self.update_at.isoformat()})
         return dictionary
