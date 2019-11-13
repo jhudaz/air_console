@@ -2,7 +2,7 @@
 """ model base """
 from uuid import uuid4
 from datetime import datetime
-from models import storage
+import models
 
 
 class BaseModel():
@@ -29,7 +29,7 @@ class BaseModel():
             self.id = str(uuid4())
             self.update_at = datetime.now()
             self.created_at = datetime.now()
-            storage.new(self)
+            models.storage.new(self)
 
     def __str__(self):
         """" return de representation of the instance """
@@ -39,12 +39,11 @@ class BaseModel():
     def save(self):
         """ save the changes and update the date """
         self.update_at = datetime.now()
-        self.update_at = self.update_at.isoformat()
-        storage.save()
+        models.storage.save()
 
     def to_dict(self):
         """ return a dictionary """
-        dictionary = self.__dict__
+        dictionary = self.__dict__.copy()
         dictionary.update({'__class__': self.__class__.__name__})
         dictionary.update({'created_at': self.created_at.isoformat()})
         dictionary.update({'update_at': self.update_at.isoformat()})
